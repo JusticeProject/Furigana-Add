@@ -30,11 +30,11 @@ passage = open("passage.txt", "r", encoding="utf-8").read()
 
 for kanji in words:
     furigana = get_furigana(kanji.strip())
-    ruby = "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby"
+    ruby = "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>"
     passage = passage.replace(kanji, ruby)
     time.sleep(random.randint(30, 90))
 
-output = open("updated_passage.html", "w", encoding="utf-8")
+output = open("updated_passage.txt", "w", encoding="utf-8")
 output.write(passage)
 output.close()
 print("done!")
