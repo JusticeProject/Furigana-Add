@@ -36,6 +36,7 @@ for kanji in words:
     passage = passage.replace(kanji, ruby)
     time.sleep(random.randint(30, 90))
 
+passage = passage.replace("\n", "<br>\n")
 output = open("updated_passage.txt", "w", encoding="utf-8")
 output.write(passage)
 output.close()
