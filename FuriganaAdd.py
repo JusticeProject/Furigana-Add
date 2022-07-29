@@ -29,16 +29,9 @@ words = open("words.txt", "r", encoding="utf-8").readlines()
 passage = open("passage.txt", "r", encoding="utf-8").read()
 
 for kanji in words:
-    add_breaks = False
-    if ("\n" in kanji):
-        add_breaks = True
-        
     kanji = kanji.strip()
     furigana = get_furigana(kanji)
     ruby = "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>"
-
-    if (add_breaks):
-        ruby += "<br>"
     
     passage = passage.replace(kanji, ruby)
     time.sleep(random.randint(30, 90))
