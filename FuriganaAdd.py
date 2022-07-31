@@ -28,8 +28,12 @@ def get_furigana(kanji):
 words = open("words.txt", "r", encoding="utf-8").readlines()
 passage = open("passage.txt", "r", encoding="utf-8").read()
 
+# remove duplicates
+words = [word.strip() for word in words]
+words = list(set(words))
+print(f"length of word list = {len(words)}")
+
 for kanji in words:
-    kanji = kanji.strip()
     furigana = get_furigana(kanji)
     ruby = "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>"
     
