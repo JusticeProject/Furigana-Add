@@ -15,6 +15,7 @@ def get_furigana(kanji):
     # get the furigana for the first result
     span = bs.find("span", {"class": "furigana"})
     if (span is None):
+        print("could not find " + kanji)
         return ""
     
     spans = span.find_all("span")
