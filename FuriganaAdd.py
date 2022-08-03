@@ -42,9 +42,12 @@ for line in words:
     separate_kanji = line_split[1:]
     furigana_list = get_furigana(compound_word)
     
-    if (len(separate_kanji) == 0) or (len(separate_kanji) != len(furigana_list)):
+    if (len(separate_kanji) == 0):
         furigana = "".join(furigana_list)
         ruby = "<ruby>" + compound_word + "<rt>" + furigana + "</rt></ruby>"
+        passage = passage.replace(compound_word, ruby)
+    elif (len(separate_kanji) != len(furigana_list)):
+        ruby = "<ruby>" + compound_word + "<rt></rt></ruby>"
         passage = passage.replace(compound_word, ruby)
     else:
         ruby = compound_word
@@ -53,7 +56,7 @@ for line in words:
             ruby = ruby.replace(kanji, "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>")
         passage = passage.replace(compound_word, ruby)
     
-    time.sleep(random.randint(30, 90))
+    time.sleep(random.randint(5, 15))
 
 passage = passage.replace("\n", "<br>\n")
 output = open("updated_passage.txt", "w", encoding="utf-8")
