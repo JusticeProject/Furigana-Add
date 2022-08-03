@@ -16,13 +16,15 @@ def get_furigana(kanji):
     span = bs.find("span", {"class": "furigana"})
     if (span is None):
         print("could not find " + kanji)
-        return ""
+        return []
     
     spans = span.find_all("span")
-    hiragana_list = [item.text for item in spans]
-    hiragana = "".join(hiragana_list)
-    print("found " + hiragana + " for " + kanji)
-    return hiragana
+    hiragana_list = []
+    for item in spans:
+        if len(item.text) > 0:
+            hiragana_list.append(item.text)
+    print("found " + str(hiragana_list) + " for " + kanji)
+    return hiragana_list
 
 ###################################################################################################
 
@@ -34,11 +36,23 @@ words = [word.strip() for word in words]
 words = list(set(words))
 print(f"length of word list = {len(words)}")
 
-for kanji in words:
-    furigana = get_furigana(kanji)
-    ruby = "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>"
+for line in words:
+    line_split = line.split(",")
+    compound_word = line_split[0]
+    separate_kanji = line_split[1:]
+    furigana_list = get_furigana(compound_word)
     
-    passage = passage.replace(kanji, ruby)
+    if (len(separate_kanji) == 0) or (len(separate_kanji) != len(furigana_list)):
+        furigana = "".join(furigana_list)
+        ruby = "<ruby>" + compound_word + "<rt>" + furigana + "</rt></ruby>"
+        passage = passage.replace(compound_word, ruby)
+    else:
+        ruby = compound_word
+        kanji_furigana = list(zip(separate_kanji, furigana_list))
+        for kanji,furigana in kanji_furigana:
+            ruby = ruby.replace(kanji, "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>")
+        passage = passage.replace(compound_word, ruby)
+    
     time.sleep(random.randint(30, 90))
 
 passage = passage.replace("\n", "<br>\n")
