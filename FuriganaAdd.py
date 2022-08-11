@@ -43,20 +43,23 @@ for line in words:
     furigana_list = get_furigana(compound_word)
     
     if (len(separate_kanji) == 0):
+        print("combining the furigana")
         furigana = "".join(furigana_list)
         ruby = "<ruby>" + compound_word + "<rt>" + furigana + "</rt></ruby>"
         passage = passage.replace(compound_word, ruby)
     elif (len(separate_kanji) != len(furigana_list)):
+        print("not sure what to do with the furigana")
         ruby = "<ruby>" + compound_word + "<rt></rt></ruby>"
         passage = passage.replace(compound_word, ruby)
     else:
+        print("matching kanji with its furigana")
         ruby = compound_word
         kanji_furigana = list(zip(separate_kanji, furigana_list))
         for kanji,furigana in kanji_furigana:
             ruby = ruby.replace(kanji, "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>")
         passage = passage.replace(compound_word, ruby)
     
-    time.sleep(random.randint(5, 15))
+    time.sleep(random.randint(30, 90))
 
 passage = passage.replace("\n", "<br>\n")
 output = open("updated_passage.txt", "w", encoding="utf-8")
