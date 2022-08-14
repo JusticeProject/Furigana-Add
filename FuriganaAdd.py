@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+import requests
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 import time
@@ -6,10 +6,34 @@ import random
 
 ###################################################################################################
 
+CUSTOM_HTTP_HEADER = {
+    "User-Agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 Safari/604.1",
+    "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Encoding":"gzip, deflate, br",
+    "Accept-Language":"en-US,en;q=0.9",
+    "Referer":"https://www.google.com/"
+}
+
+###################################################################################################
+
+def get_html(url):
+    for i in range(0, 5):
+        try:
+            result = requests.get(url, headers=CUSTOM_HTTP_HEADER, timeout=5)
+            return result.text
+        except BaseException as e:
+            strError = str(e.args)
+            print("failed to retrieve html: " + strError)
+            time.sleep(i + 5)
+
+    return ""
+
+###################################################################################################
+
 def get_furigana(kanji):
     base_url = "https://jisho.org/search/"
     url_parsed = base_url + quote(kanji)
-    html = urlopen(url_parsed)
+    html = get_html(url_parsed)
     bs = BeautifulSoup(html, "html.parser")
 
     # get the furigana for the first result
